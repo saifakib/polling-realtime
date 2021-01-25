@@ -1,13 +1,15 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 const route = require('./routes/route');
 
 const server = express();
 
-server.use(cors);
+// server.use(cors);
+server.use(morgan('dev'));
 server.use(express.static(path.join(__dirname, 'public')));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));

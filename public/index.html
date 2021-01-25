@@ -13,29 +13,47 @@
 </head>
 
 <body>
-    <h1>Game Vote</h1>
-    <p>Vote Your favourite Game</p>
-    <form id="vote-form">
-        <p>
-            <input type="radio" name="game" id="football" value="Football"><label for="football">Football</label>
-        </p>
-        <p>
-            <input type="radio" name="game" id="cricket" value="Cricket"><label for="cricket">Cricket</label>
-        </p>
-        <p>
-            <input type="radio" name="game" id="hockey" value="Hockey"><label for="hockey">Hockey</label>
-        </p>
-        <p>
-            <input type="radio" name="game" id="tenis" value="Tenis"><label for="tenis">Tenis</label>
-        </p>
-        <input type="submit" value="Vote" class="btn">
-    </form>
+    <div class="container">
+        <h1>Game Vote</h1>
+        <p>Vote Your favourite Game</p>
+        <form id="vote-form">
+            <p>
+                <label>
+                    <input type="radio" name="game" id="football" value="Football">
+                    <span>Football</span>
+                </label>
 
-    <br>
-    <br>
+            </p>
+            <p>
+                <label>
+                    <input type="radio" name="game" id="cricket" value="Cricket">
+                    <span>Cricket</span>
+                </label>
 
-    <div id="chatContainer" style="height: 300px; width: 100%">
+            </p>
+            <p>
+                <label>
+                    <input type="radio" name="game" id="hockey" value="Hockey">
+                    <span>Hockey</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="radio" name="game" id="tenis" value="Tenis">
+                    <span>Tenis</span>
+                </label>
+
+            </p>
+            <input type="submit" value="Vote" class="btn">
+        </form>
+
+        <br>
+        <br>
+
+        <h5 style="text-align: center" id="chartTitle"></h5>
+        <div id="chartContainer" style="height: 300px;width:100%"></div>
     </div>
+
 
 
     <!-- Compiled and minified JavaScript -->
