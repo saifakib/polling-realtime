@@ -19,45 +19,66 @@ form.addEventListener('submit', (e) => {
         .catch(e => console.log(e))
 })
 
-let dataPoints = [
-    { label: 'Football', y: 0 },
-    { label: 'Cricket', y: 0 },
-    { label: 'Hockey', y: 0 },
-    { label: 'Tenis', y: 0 },
-];
+fetch('http://localhost:3000/poll')
+    .then(res => res.json())
+    .then(data => {
+        const votes = data.votes;
+        const totalVotes = votes.length;
+        document.querySelector('#chartTitle').textContent = `Total Votes: ${totalVotes}`;
 
-const chartContainer = document.getElementById('chartContainer');
-if (chartContainer) {
-    const chart = new CanvasJS.Chart('chartContainer', {
-        animationEnabled: true,
-        theme: 'theme1',
-        data: [
-            {
-                type: 'column',
-                dataPoints: dataPoints
-            }
-        ]
-    });
-    chart.render();
+        let voteCounts = {
+            Football: 0,
+            Cricket: 0,
+            Hockey: 0,
+            Tenis: 0
+        };
 
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+        const voteCount = votes.reduce((acc, vote) => (        //acc--->array, vote---> element name
+            (acc[vote.game] = (acc[vote.game] || 0) + parseInt(vote.points)), acc
+        ), {});
 
-    var pusher = new Pusher('7674db2fe393342a6a78', {
-        cluster: 'ap2'
-    });
+        let dataPoints = [
+            { label: 'Football', y: voteCount.Football },
+            { label: 'Cricket', y: voteCount.Cricket },
+            { label: 'Hockey', y: voteCount.Hockey },
+            { label: 'Tenis', y: voteCount.Tenis },
+        ];
 
-    var channel = pusher.subscribe('game-poll');
-    channel.bind('game-vote', function (data) {
-        dataPoints = dataPoints.map(x => {
-            if(x.label == data.game) {
-                x.y += data.points
-                return x;
-            } else {
-                return x;
-            }
-        })
-        chart.render();
-    });
-}
+        const chartContainer = document.getElementById('chartContainer');
+        if (chartContainer) {
+            const chart = new CanvasJS.Chart('chartContainer', {
+                animationEnabled: true,
+                theme: 'theme3',
+                data: [
+                    {
+                        type: 'column',
+                        dataPoints: dataPoints
+                    }
+                ]
+            });
+            chart.render();
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('7674db2fe393342a6a78', {
+                cluster: 'ap2'
+            });
+
+            var channel = pusher.subscribe('game-poll');
+            channel.bind('game-vote', function (data) {
+                dataPoints = dataPoints.map(x => {
+                    if (x.label == data.game) {
+                        x.y += data.points
+                        return x;
+                    } else {
+                        return x;
+                    }
+                })
+                chart.render();
+            });
+        }
+    })
+
+
 
